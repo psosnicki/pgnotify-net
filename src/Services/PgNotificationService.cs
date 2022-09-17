@@ -4,6 +4,7 @@ using PgNotifyNet.Db;
 using PgNotifyNet.Interfaces;
 using System.Text.Json;
 using System.Text.Json.Nodes;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace PgNotifyNet.Services;
 public record AdditionalInformation(JsonObject OldData, JsonObject NewData, string Action, string Table);
@@ -114,16 +115,16 @@ internal class PgNotificationService : IPgNotificationService
     private async Task Publish(object? oldData, object? newData, Change change, Type dataType)
     {
         var genericType = typeof(IHandleNotification<>).MakeGenericType(dataType);
-        var subscriber = _serviceProvider.GetService(genericType);
-        if (subscriber == null)
+        var subscribers = _serviceProvider.GetServices(genericType);
+        if (!subscribers.Any())
         {
             _logger.LogWarning("There is no notification handler defined for {genericTypeName}", genericType.FullName);
             return;
         }
-
-        await (Task)genericType
-            .GetMethod("OnDataChanged")
-            .Invoke(subscriber, parameters: new object[] { oldData, newData, change });
+        foreach (var subscriber in subscribers)
+            await (Task)genericType
+          .GetMethod("OnDataChanged")
+          .Invoke(subscriber, parameters: new object[] { oldData, newData, change });
     }
     public async Task RemoveTriggers(CancellationToken cancellationToken)
     {
