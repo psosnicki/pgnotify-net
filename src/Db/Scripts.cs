@@ -1,4 +1,6 @@
-﻿namespace PgNotifyNet.Db;
+﻿using PgNotifyNet.Common;
+
+namespace PgNotifyNet.Db;
 internal static class Scripts
 {
     internal static string PgNotifyNetSchema = "pgNotifyNet";
@@ -35,7 +37,7 @@ internal static class Scripts
     internal static string CreateTrigger(string table, string schema, params Change[] updateOn)
     {
         var notifyAfter = (!updateOn.Any() ? new[] { Change.Update, Change.Delete, Change.Insert } : updateOn).Select(x => Enum.GetName(typeof(Change), x)?.ToUpper()).Aggregate((p, n) => $"{p} OR {n}");
-        var triggerName = $"OnDataTableChange_{notifyAfter?.Replace(" ", "_")}_{schema}_{table}";
+        var triggerName = Helpers.CreateTriggerName(updateOn, table, schema);
         return $@"DROP TRIGGER IF EXISTS ""{triggerName}"" ON ""{schema}"".""{table}""; CREATE TRIGGER ""{triggerName}""
                     AFTER {notifyAfter} 
                     ON ""{schema}"".""{table}""
