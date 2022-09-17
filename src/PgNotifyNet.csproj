@@ -1,0 +1,30 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFrameworks>netstandard2.1;net6.0</TargetFrameworks>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+	  <LangVersion>10.0</LangVersion>
+	  <PackageReadmeFile>README.md</PackageReadmeFile>
+	  <Copyright>PSosnicki</Copyright>
+	  <Authors>PSosnicki</Authors>
+	  <Description>.NET library to easily subscribe and listen PostgreSQL Database  Notify notifications</Description>
+	  <PackageTags>pgNotifyNet;pgNotify;postgres net listener;notifications; </PackageTags>
+	  <PackageLicenseFile>..\LICENSE.txt</PackageLicenseFile>
+	  <PackageRequireLicenseAcceptance>True</PackageRequireLicenseAcceptance>
+	  <Version>1.0.0-beta</Version>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <None Include="..\README.md">
+      <Pack>True</Pack>
+      <PackagePath>\</PackagePath>
+    </None>
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.Extensions.Hosting" Version="6.0.1" />
+    <PackageReference Include="Npgsql.ConfigureConnection" Version="0.1.1" />
+  </ItemGroup>
+
+</Project>
