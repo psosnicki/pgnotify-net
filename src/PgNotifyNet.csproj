@@ -1,20 +1,26 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
-  <PropertyGroup>
-    <TargetFrameworks>netstandard2.1;net6.0</TargetFrameworks>
-    <ImplicitUsings>enable</ImplicitUsings>
-    <Nullable>enable</Nullable>
-	  <LangVersion>10.0</LangVersion>
-	  <PackageReadmeFile>README.md</PackageReadmeFile>
-	  <Copyright>PSosnicki</Copyright>
-	  <Authors>PSosnicki</Authors>
-	  <Description>.NET library to easily subscribe and listen PostgreSQL Database  Notify notifications</Description>
-	  <PackageTags>pgNotifyNet;pgNotify;postgres net listener;notifications; </PackageTags>
-	  <PackageLicenseFile>..\LICENSE.txt</PackageLicenseFile>
-	  <PackageRequireLicenseAcceptance>True</PackageRequireLicenseAcceptance>
-	  <Version>1.0.0-beta</Version>
-  </PropertyGroup>
+	<PropertyGroup>
+		<TargetFrameworks>netstandard2.1;net6.0</TargetFrameworks>
+		<ImplicitUsings>enable</ImplicitUsings>
+		<Nullable>enable</Nullable>
+		<LangVersion>10.0</LangVersion>
+		<PackageReadmeFile>README.md</PackageReadmeFile>
+		<Copyright>psosnicki</Copyright>
+		<Authors>psosnicki</Authors>
+		<Description>.NET library to easily subscribe and listen PostgreSQL Database  Notify notifications</Description>
+		<PackageTags>pgNotifyNet;pgNotify;postgres net listener;postgres notifications; </PackageTags>
+		<PackageRequireLicenseAcceptance>True</PackageRequireLicenseAcceptance>
+		<Version>1.0.0-beta</Version>
+		<RepositoryUrl></RepositoryUrl>
+		<PackageProjectUrl>https://github.com/psosnicki/pgnotify-net</PackageProjectUrl>
+		<RepositoryType>git</RepositoryType>
+		<PackageLicenseFile>LICENSE.txt</PackageLicenseFile>
+	</PropertyGroup>
 
+  <ItemGroup>
+	  <None Include="..\LICENSE.txt" Pack="true" PackagePath="LICENSE.txt"/>
+	</ItemGroup>
   <ItemGroup>
     <None Include="..\README.md">
       <Pack>True</Pack>
