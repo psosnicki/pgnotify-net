@@ -1,5 +1,7 @@
 # .NET library to easily subscribe and listen PostgreSQL Database real time notifications
 
+![build](https://github.com/psosnicki/pgnotify-net/actions/workflows/dotnet.yml/badge.svg)
+
 ## Install
 ```
 PM> Install-Package PgNotifyNet

@@ -9,7 +9,7 @@
 		<Copyright>psosnicki</Copyright>
 		<Title>PgNotifyNet</Title>
 		<Authors>psosnicki</Authors>
-		<Description>.NET library to easily subscribe and listen PostgreSQL Database  Notify notifications</Description>
+		<Description>.NET library to easily subscribe and listen PostgreSQL Database notifications</Description>
 		<PackageTags>pg notify;pg listen;postgresql net;postgresql c# listener;postgresql notifications; </PackageTags>
 		<PackageRequireLicenseAcceptance>True</PackageRequireLicenseAcceptance>
 		<Version>1.0.0-beta</Version>
