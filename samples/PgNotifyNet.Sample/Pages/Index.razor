@@ -1,0 +1,136 @@
+﻿@page "/"
+
+@using Microsoft.AspNetCore.SignalR.Client
+@using Newtonsoft.Json
+@using JsonDiffPatchDotNet
+@using Newtonsoft.Json.Linq
+@using PgNotifyNet.Sample.Models
+
+@inject NavigationManager NavigationManager
+@inject IHostEnvironment HostEnvironment
+
+@implements IAsyncDisposable
+
+<PageTitle>Sample</PageTitle>
+
+<h2> Blazor + SignalR + Postgres Notify/Listen feature + PgNotifyNet </h2>
+<h3> implementation of real time db notification using SignalR + PostgreSQL listen/notify features + PgNotifyNet</h3>
+
+
+<table class="table">
+  <thead>
+    <tr>
+      <th scope="col">Change</th>
+      <th scope="col">ID</th>
+      <th scope="col">Property</th>
+      <th scope="col">Old value</th>
+      <th scope="col">New value</th>
+    </tr>
+  </thead>
+    <tbody>
+@foreach (var change in changeLog)
+{
+
+
+            @switch (change.ChangeType)
+            {
+                case Change.Insert:
+                 <tr>
+                        <td style="color:gray;">@change.ChangeType</td>
+                        <td>@change.NewValue.Id</td>
+                        <td></td>
+                        <td>
+                        </td>
+                        <td>
+                           <code>
+                              @JsonConvert.SerializeObject(change.NewValue,Formatting.Indented)
+                           </code>
+
+                        </td>
+                </tr>
+                  break;
+                case Change.Delete:
+                  <tr>
+                        <td style="color:gray;">@change.ChangeType</td>
+                        <td>@change.OldValue.Id</td>
+                        <td></td>
+                        <td>
+                           <code>
+                              @JsonConvert.SerializeObject(change.OldValue,Formatting.Indented)
+                           </code>
+                        </td>
+                        <td>
+                   
+
+                        </td>
+                    </tr>
+                    break;
+                case Change.Update:
+
+                if (@change.Diff is null) break;
+
+                @foreach (var item in (JObject)@change.Diff)
+                {
+                    <tr>
+                        <td style="color:gray;">@change.ChangeType</td>
+                        <td>@change.OldValue.Id</td>
+                        <td><code>@item.Key</code></td>
+                        <td>
+                            @if (item.Value is JArray oldValues)
+                            {
+                                @oldValues[0].ToString()
+                            }
+                        </td>
+                        <td>
+                            @if (item.Value is JArray newValues)
+                            {
+                                @newValues[1].ToString()
+                            }
+                        </td>
+                    </tr>
+                }
+                  break;
+                  default:
+                    break;
+            }
+        }
+  </tbody>
+</table>
+
+
+@code{
+
+
+    public bool IsConnected => hubConnection?.State == HubConnectionState.Connected;
+
+    private record CategoryChange(Category OldValue,Category NewValue, Change ChangeType, JToken Diff);
+
+    private HubConnection? hubConnection;
+
+    private IList<CategoryChange> changeLog = new List<CategoryChange>();
+
+    protected override async Task OnInitializedAsync()
+    {
+        hubConnection = new HubConnectionBuilder()
+            .WithUrl(HostEnvironment.IsDevelopment() ? NavigationManager.ToAbsoluteUri("/dbNotifications") : new Uri("http://pgnotify-net-sample/dbNotifications"))
+            .Build();
+
+        hubConnection.On<Category,Category, Change>("onCategoryUpdated", (oldCategory,newCategory,change) =>
+        {
+            changeLog.Add(new CategoryChange(oldCategory, newCategory,change,  new JsonDiffPatch().Diff(JObject.FromObject(oldCategory ?? new Category()), JObject.FromObject(newCategory))));
+            InvokeAsync(StateHasChanged);
+        });
+
+        await hubConnection.StartAsync();
+    }
+
+    public async ValueTask DisposeAsync()
+    {
+        if (hubConnection is not null)
+        {
+            await hubConnection.DisposeAsync();
+        }
+    }
+}
+
+

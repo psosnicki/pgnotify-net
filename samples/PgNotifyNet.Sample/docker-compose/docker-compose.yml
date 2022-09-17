@@ -1,0 +1,61 @@
+version: '3'
+
+services:
+  db:
+    container_name: db
+    image: postgres:13
+    environment:
+      POSTGRES_DB: northwind
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+    volumes:
+      - postgresql_bin:/usr/lib/postgresql
+      - postgresql_data:/var/lib/postgresql/data
+      - ./northwind.sql:/docker-entrypoint-initdb.d/northwind.sql
+      - ./files:/files
+    ports:
+      - 55432:5432
+    networks:
+      - db
+
+  db-updater:
+     container_name: db_updater
+     image: ubuntu
+     environment: 
+       POSTGRES_DB: northwind
+       POSTGRES_USER: postgres
+       POSTGRES_PASSWORD: postgres
+     command: bash ./scripts/db_update.sh
+     depends_on:
+       - db
+     networks:
+       - db
+     volumes:
+       - ./scripts:/scripts
+
+  pgnotify-net-sample:
+     build:
+       context: ../../..
+       dockerfile: ./samples/PgNotifyNet.Sample/Dockerfile
+     container_name: pgnotify-net-sample 
+     image: pgnotifynet/sample
+     depends_on:
+       - db-updater
+     networks:
+       - db
+     environment:
+       - ASPNETCORE_URLS=http://+:80
+     ports:
+       - 5111:80
+     
+networks:
+  db:
+    driver: bridge
+
+volumes:
+  pgadmin_root_prefs:
+    driver: local
+  postgresql_data:
+    driver: local
+  postgresql_bin:
+    driver: local
