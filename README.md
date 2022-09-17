@@ -4,7 +4,7 @@
 
 ## Install
 ```
-PM> Install-Package PgNotifyNet -Version 1.0.0-beta
+PM> Install-Package PgNotifyNet -Version 1.0.1-beta
 ```
 ## Example
 
