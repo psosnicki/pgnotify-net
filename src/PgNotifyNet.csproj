@@ -7,19 +7,21 @@
 		<LangVersion>10.0</LangVersion>
 		<PackageReadmeFile>README.md</PackageReadmeFile>
 		<Copyright>psosnicki</Copyright>
+		<Title>PgNotifyNet</Title>
 		<Authors>psosnicki</Authors>
 		<Description>.NET library to easily subscribe and listen PostgreSQL Database  Notify notifications</Description>
-		<PackageTags>pgNotifyNet;pgNotify;postgres net listener;postgres notifications; </PackageTags>
+		<PackageTags>pg notify;pg listen;postgresql net;postgresql c# listener;postgresql notifications; </PackageTags>
 		<PackageRequireLicenseAcceptance>True</PackageRequireLicenseAcceptance>
 		<Version>1.0.0-beta</Version>
 		<RepositoryUrl></RepositoryUrl>
 		<PackageProjectUrl>https://github.com/psosnicki/pgnotify-net</PackageProjectUrl>
 		<RepositoryType>git</RepositoryType>
 		<PackageLicenseFile>LICENSE.txt</PackageLicenseFile>
+		<RepositoryUrl>https://github.com/psosnicki/pgnotify-net</RepositoryUrl>
 	</PropertyGroup>
 
   <ItemGroup>
-	  <None Include="..\LICENSE.txt" Pack="true" PackagePath="LICENSE.txt"/>
+	  <None Include="..\LICENSE.txt" Pack="true" PackagePath="LICENSE.txt" />
 	</ItemGroup>
   <ItemGroup>
     <None Include="..\README.md">

@@ -1,4 +1,4 @@
-# .NET library to easily subscribe and listen PostgreSQL Database  NOTIFY notifications
+# .NET library to easily subscribe and listen PostgreSQL Database real time notifications
 
 ## Install
 ```
